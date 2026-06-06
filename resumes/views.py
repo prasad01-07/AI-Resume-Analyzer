@@ -31,9 +31,11 @@ def home(request):
 
         if form.is_valid():
             resume = form.save()
-
-            pdf_path = resume.resume_file.path
-            extracted_text = extract_text_from_pdf(pdf_path)
+            try:
+                pdf_path = resume.resume_file.path
+                extracted_text = extract_text_from_pdf(pdf_path)
+            except Exception as e:
+             return HttpResponse(f"ERROR: {str(e)}")
 
             skills = extract_skills(extracted_text)
             score = advanced_score(extracted_text, skills)
